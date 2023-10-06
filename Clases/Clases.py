@@ -51,13 +51,18 @@ class TenthFrame(Frame):
         self.extra_roll: Roll = None
 
     def add_roll(self, pins: int):
-        self.rolls.append(Roll(pins))
+        if len(self.rolls) <= 2:
+            self.rolls.append(Roll(pins))
+        else:
+            self.extra_roll = Roll(pins)
 
     def score(self) -> int:
         if self.is_strike():
             return self.rolls[0].pins + self.rolls[1].pins + self.extra_roll.pins
         elif self.is_spare():
             return self.rolls[0].pins + self.rolls[1].pins + self.extra_roll.pins
+        else:
+            return self.rolls[0].pins + self.rolls[1].pins
 
 
 class Game:
