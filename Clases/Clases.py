@@ -20,13 +20,18 @@ class Frame(ABC):
         pass
 
     def is_strike(self) -> bool:
-        pass
+        if self.rolls[0].pins == 10:
+            return True
 
     def is_spare(self) -> bool:
-        pass
+        if self.rolls[0].pins + self.rolls[1].pins == 10:
+            return True
 
 
 class NormalFrame(Frame):
+    def __init__(self):
+        super().__init__()
+
     def add_roll(self, pins: int):
         self.rolls.append(Roll(pins))
 
@@ -41,13 +46,18 @@ class NormalFrame(Frame):
 
 
 class TenthFrame(Frame):
-    extra_roll: Roll = None
+    def __init__(self):
+        super().__init__()
+        self.extra_roll: Roll = None
 
     def add_roll(self, pins: int):
         self.rolls.append(Roll(pins))
 
     def score(self) -> int:
-        pass
+        if self.is_strike():
+            return self.rolls[0].pins + self.rolls[1].pins + self.extra_roll.pins
+        elif self.is_spare():
+            return self.rolls[0].pins + self.rolls[1].pins + self.extra_roll.pins
 
 
 class Game:
